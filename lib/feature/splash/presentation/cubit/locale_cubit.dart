@@ -5,12 +5,6 @@ import 'package:quotes/core/use_case/base_use_case.dart';
 import 'package:quotes/core/utils/app_strings.dart';
 import 'package:quotes/feature/splash/domain/user_case/change_lang.dart';
 import 'package:quotes/feature/splash/domain/user_case/get_saved_lang.dart';
-
-
-
-
-
-
 part 'locale_state.dart';
 
 class LocaleCubit extends Cubit<LocaleState> {
