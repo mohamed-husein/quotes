@@ -31,7 +31,6 @@ class RandomQuotes extends StatelessWidget {
             AppLocalizationsSetup.localeResolutionCallback,
             localizationsDelegates:
             AppLocalizationsSetup.localizationsDelegates,
-
           );
         },
       ),

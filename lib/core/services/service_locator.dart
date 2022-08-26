@@ -11,11 +11,12 @@ import 'package:quotes/feature/random_quotes/data/repository/quote_repository.da
 import 'package:quotes/feature/random_quotes/domain/repository/base_quote_repository.dart';
 import 'package:quotes/feature/random_quotes/domain/use_cases/get_random_quote.dart';
 import 'package:quotes/feature/random_quotes/presentation/cubit/random_quotes_cubit.dart';
-import 'package:quotes/feature/splash/data/datasource/lang_locale_datasource.dart';
+import 'package:quotes/feature/splash/data/datasource/lang_local_data_source.dart';
 import 'package:quotes/feature/splash/data/repository/lang_repository_impl.dart';
 import 'package:quotes/feature/splash/domain/repository/lang_repository.dart';
-import 'package:quotes/feature/splash/domain/use_case/change_locale.dart';
-import 'package:quotes/feature/splash/domain/use_case/get_saved_lang.dart';
+
+import 'package:quotes/feature/splash/domain/user_case/change_lang.dart';
+import 'package:quotes/feature/splash/domain/user_case/get_saved_lang.dart';
 import 'package:quotes/feature/splash/presentation/cubit/locale_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,24 +27,25 @@ class ServiceLocator {
     // Features
     // Bloc
     sl.registerFactory(() => RandomQuotesCubit(getRandomQuote: sl()));
-    sl.registerFactory<LocaleCubit>(
-            () => LocaleCubit(getSavedLangUseCase: sl(), changeLocaleUseCase: sl()));
+    sl.registerFactory(() =>
+        LocaleCubit(getSavedLangUseCase: sl(), changeLocaleUseCase: sl()));
     // UseCase
     sl.registerLazySingleton(() => GetRandomQuote(quoteRepository: sl()));
-    sl.registerLazySingleton<GetSavedLangUseCase>(
-            () => GetSavedLangUseCase(baseLangRepository: sl()));
-    sl.registerLazySingleton<ChangeLocaleUseCase>(
-            () => ChangeLocaleUseCase(baseLangRepository: sl()));
+    sl.registerLazySingleton(
+        () => GetSavedLangUseCase(langRepository: sl()));
+    sl.registerLazySingleton(
+        () => ChangeLangUseCase(langRepository: sl()));
     //Repository
     sl.registerLazySingleton<BaseQuoteRepository>(
         () => QuoteRepository(sl(), sl(), sl()));
-    sl.registerLazySingleton<BaseLangRepository>(
-            () => LangRepositoryImpl(langLocaleDatasource: sl()));
+    sl.registerLazySingleton<LangRepository>(
+        () => LangRepositoryImpl(langLocalDataSource: sl()));
     //Remote Datasource
-    sl.registerLazySingleton<BaseRemoteDataSource>(() => RemoteDataSource(apiConsumer:sl() ));
-    sl.registerLazySingleton<ApiConsumer>(() => DioConsumer(client:sl() ));
-    sl.registerLazySingleton<LangLocaleDatasource>(
-            () => LangLocaleDatasourceImpl(sharedPreferences: sl()));
+    sl.registerLazySingleton<BaseRemoteDataSource>(
+        () => RemoteDataSource(apiConsumer: sl()));
+    sl.registerLazySingleton<ApiConsumer>(() => DioConsumer(client: sl()));
+    sl.registerLazySingleton<LangLocalDataSource>(
+        () => LangLocalDataSourceImpl(sharedPreferences: sl()));
     sl.registerLazySingleton(() => Dio());
     ////Local Datasource
     sl.registerLazySingleton<BaseLocalDataSource>(

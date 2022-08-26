@@ -16,7 +16,7 @@ class RandomQuotesCubit extends Cubit<RandomQuotesState> {
 
   Future getRandomQuotes() async {
     emit(RandomQuotesIsLoading());
-    final response = await getRandomQuote(const NoParameters());
+    final response = await getRandomQuote( NoParams());
 
     response.fold(
       (l) => emit(RandomQuotesFailed(message: _mapFailureToString(l))),
